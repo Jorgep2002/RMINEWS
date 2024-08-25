@@ -1,5 +1,7 @@
 package edu.lenin;
 
+import edu.lenin.data.mysql.mysqlDatabase;
+
 /**
  * Hello world!
  *
@@ -13,5 +15,6 @@ public class App {
             "msg"
         );
         server.deploy();
+        mysqlDatabase.getConnection();
     }
 }
