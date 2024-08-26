@@ -1,7 +1,6 @@
 package edu.lenin;
 
-import edu.lenin.domain.RMIMSG;
-import edu.lenin.domain.UserInterface;
+import edu.lenin.domain.interfaces.UserInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

@@ -1,4 +1,4 @@
-package edu.lenin.domain;
+package edu.lenin.domain.interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

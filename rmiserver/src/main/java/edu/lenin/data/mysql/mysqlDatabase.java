@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class mysqlDatabase {
 
     // Datos de conexión a la base de datos
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/users";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/rminews";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "";  // Sin contraseña
 

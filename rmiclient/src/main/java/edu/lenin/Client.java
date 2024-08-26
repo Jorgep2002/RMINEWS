@@ -1,6 +1,6 @@
 package edu.lenin;
 
-import edu.lenin.domain.UserInterface;
+import edu.lenin.domain.interfaces.UserInterface;
 
 import java.rmi.Naming;
 
