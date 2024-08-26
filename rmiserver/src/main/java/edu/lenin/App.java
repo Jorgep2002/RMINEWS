@@ -14,7 +14,7 @@ public class App {
             "1802",
             "msg"
         );
-        server.deploy();
         mysqlDatabase.getConnection();
+        server.deploy();
     }
 }

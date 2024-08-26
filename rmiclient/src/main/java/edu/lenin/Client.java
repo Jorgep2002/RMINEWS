@@ -1,5 +1,6 @@
 package edu.lenin;
 
+import edu.lenin.domain.entities.UserEntity;
 import edu.lenin.domain.interfaces.UserServiceInterface;
 
 import java.rmi.Naming;
@@ -12,13 +13,18 @@ public class Client {
     this.url = "rmi://" + ip + ":" + port + "/" + serviceName;
   }
 
-  public Object createUser(String username, String password) {
+  public void createUser(String username, String password, String nombre, UserEntity.Rol rol) {
     try {
       UserServiceInterface service = (UserServiceInterface) Naming.lookup(this.url);
-      return service.login(username, password);
+
+      // Crear una instancia de UserEntity
+      UserEntity user = new UserEntity(username, password, nombre, rol);
+
+      // Llamar al método createUser en el servicio
+      service.createUser(user);
+      System.out.println("Usuario creado con éxito.");
     } catch (Exception e) {
       e.printStackTrace();
-      return null;
     }
   }
   

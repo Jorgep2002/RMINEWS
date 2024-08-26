@@ -12,13 +12,14 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceI
 
     private final UserDAOImpl userDAO;
 
-    protected UserServiceImpl() throws RemoteException {
+    public UserServiceImpl() throws RemoteException {
         super();
         this.userDAO = new UserDAOImpl(); // Inicializa el DAO
     }
 
     @Override
     public void createUser(UserEntity user) throws RemoteException {
+        System.out.println("Servicio usuarios");
         userDAO.createUser(user);
     }
 

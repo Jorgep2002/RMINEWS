@@ -1,8 +1,11 @@
 package edu.lenin.domain.entities;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class UserEntity {
+public class UserEntity implements Serializable {
+    private static final long serialVersionUID = 1L; // Agrega un serialVersionUID para compatibilidad
+
     private String username;
     private String password;
     private String nombre;

@@ -11,7 +11,7 @@ public class UserDAOImpl  {
 
 
     public void createUser(UserEntity user) {
-        String sql = "INSERT INTO users (username, password, nombre, rol) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (username, password, nombre, rol) VALUES (?, ?, ?, ?)";
         try (Connection conn = mysqlDatabase.getConnection(); // Usa la conexión de mysqlDatabase
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getUsername());
@@ -20,12 +20,13 @@ public class UserDAOImpl  {
             stmt.setString(4, user.getRol().name());
             stmt.executeUpdate();
         } catch (SQLException e) {
+            System.out.println("paila");
             e.printStackTrace();
         }
     }
 
     public UserEntity getUser(String username) {
-        String sql = "SELECT * FROM users WHERE username = ?";
+        String sql = "SELECT * FROM usuarios WHERE username = ?";
         try (Connection conn = mysqlDatabase.getConnection(); // Usa la conexión de mysqlDatabase
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
@@ -44,7 +45,7 @@ public class UserDAOImpl  {
 
 
     public void updateUser(UserEntity user) {
-        String sql = "UPDATE users SET password = ?, nombre = ?, rol = ? WHERE username = ?";
+        String sql = "UPDATE usuarios SET password = ?, nombre = ?, rol = ? WHERE username = ?";
         try (Connection conn = mysqlDatabase.getConnection(); // Usa la conexión de mysqlDatabase
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getPassword());
@@ -59,8 +60,8 @@ public class UserDAOImpl  {
 
 
     public void deleteUser(String username) {
-        String sql = "DELETE FROM users WHERE username = ?";
-        try (Connection conn = mysqlDatabase.getConnection(); // Usa la conexión de mysqlDatabase
+        String sql = "DELETE FROM usuarios WHERE username = ?";
+        try (Connection conn = mysqlDatabase.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             stmt.executeUpdate();
