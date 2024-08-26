@@ -1,6 +1,6 @@
 package edu.lenin;
 
-import edu.lenin.domain.interfaces.UserInterface;
+import edu.lenin.domain.interfaces.UserServiceInterface;
 
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
@@ -22,7 +22,7 @@ public class Server {
   public boolean deploy() {
     try {
       System.setProperty("java.rmi.server.hostname", ip);
-      UserInterface service = new Service();
+      UserServiceInterface service = (UserServiceInterface) new Service();
       LocateRegistry.createRegistry(Integer.parseInt(port));
       Naming.rebind(uri, service);
       return true;

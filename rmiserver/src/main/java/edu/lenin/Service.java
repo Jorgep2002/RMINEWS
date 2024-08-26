@@ -1,43 +1,45 @@
 package edu.lenin;
 
-import edu.lenin.domain.interfaces.UserInterface;
+import edu.lenin.domain.entities.UserEntity;
+import edu.lenin.domain.interfaces.UserServiceInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
-public class Service extends UnicastRemoteObject implements UserInterface {
+public class Service extends UnicastRemoteObject implements UserServiceInterface {
 
   public Service() throws RemoteException {
     super();
   }
 
   @Override
-  public String getAllUsers() throws RemoteException {
-    return "";
+  public void createUser(UserEntity user) throws RemoteException {
+
   }
 
   @Override
-  public String getUser(String userId) throws RemoteException {
-    return "";
+  public UserEntity getUser(String username) throws RemoteException {
+    return null;
   }
 
   @Override
-  public String createUser(String username, String password) throws RemoteException {
-    return "Created " + username + ", " + password  ;
+  public List<UserEntity> getAllUsers() throws RemoteException {
+    return List.of();
   }
 
   @Override
-  public String deleteUser(String userId) throws RemoteException {
-    return "";
+  public void updateUser(UserEntity user) throws RemoteException {
+
   }
 
   @Override
-  public String modifyUser() throws RemoteException {
-    return "";
+  public void deleteUser(String username) throws RemoteException {
+
   }
 
   @Override
-  public String login(String username, String password) throws RemoteException {
-    return "";
+  public boolean login(String username, String password) throws RemoteException {
+    return true;
   }
 }

@@ -1,6 +1,6 @@
 package edu.lenin;
 
-import edu.lenin.domain.interfaces.UserInterface;
+import edu.lenin.domain.interfaces.UserServiceInterface;
 
 import java.rmi.Naming;
 
@@ -12,10 +12,10 @@ public class Client {
     this.url = "rmi://" + ip + ":" + port + "/" + serviceName;
   }
 
-  public String createUser(String username, String password) {
+  public Object createUser(String username, String password) {
     try {
-      UserInterface service = (UserInterface) Naming.lookup(this.url);
-      return service.createUser(username, password);
+      UserServiceInterface service = (UserServiceInterface) Naming.lookup(this.url);
+      return service.login(username, password);
     } catch (Exception e) {
       e.printStackTrace();
       return null;
