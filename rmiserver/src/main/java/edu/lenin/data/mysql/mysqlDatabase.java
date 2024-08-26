@@ -1,6 +1,5 @@
 package edu.lenin.data.mysql;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,25 +11,21 @@ public class mysqlDatabase {
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "";  // Sin contraseña
 
-    // Variable para manejar la conexión
-    private static Connection connection = null;
-
-    // Método para obtener la conexión
+    // Método para obtener una nueva conexión
     public static Connection getConnection() {
-        if (connection == null) {
-            try {
-                connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-                System.out.println("Database connected successfully.");
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.err.println("Failed to connect to the database.");
-            }
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            System.out.println("Database connected successfully.");
+            return connection;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Failed to connect to the database.");
+            return null;
         }
-        return connection;
     }
 
     // Método para cerrar la conexión
-    public static void closeConnection() {
+    public static void closeConnection(Connection connection) {
         if (connection != null) {
             try {
                 connection.close();

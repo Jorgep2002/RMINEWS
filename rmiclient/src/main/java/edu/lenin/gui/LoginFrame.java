@@ -1,8 +1,6 @@
 package edu.lenin.gui;
 
 import edu.lenin.Client;
-import edu.lenin.domain.entities.UserEntity;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -52,7 +50,7 @@ public class LoginFrame extends JFrame {
         boolean loggedIn = client.login(username, password);
         if (loggedIn) {
             JOptionPane.showMessageDialog(this, "Login successful!");
-            new MainFrame(client).setVisible(true);
+            new MainFrame(client, username).setVisible(true);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Login failed!");

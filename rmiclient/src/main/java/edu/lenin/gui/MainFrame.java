@@ -5,14 +5,19 @@ import edu.lenin.domain.entities.UserEntity;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
+    private JLabel welcomeLabel;
+    private JButton manageUsersButton;
+    private JButton newsButton;
     private Client client;
+    private String username;
+    private UserEntity.Rol userRole;
 
-    public MainFrame(Client client) {
+    public MainFrame(Client client, String username) {
         this.client = client;
+        this.username = username;
+        System.out.println(username);
         setTitle("Main Frame");
         setSize(400, 300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -21,33 +26,54 @@ public class MainFrame extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
-
-        JButton fetchUserButton = new JButton("Fetch User");
-        panel.add(fetchUserButton, BorderLayout.SOUTH);
-
-        fetchUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleFetchUser(textArea);
-            }
-        });
+        welcomeLabel = new JLabel("Loading...", SwingConstants.CENTER);
+        panel.add(welcomeLabel, BorderLayout.NORTH);
 
         add(panel);
+
+        loadUserData();
     }
 
-    private void handleFetchUser(JTextArea textArea) {
-        String username = JOptionPane.showInputDialog(this, "Enter username:");
-
-        if (username != null && !username.trim().isEmpty()) {
-            UserEntity user = client.getUser(username);
-            if (user != null) {
-                textArea.setText(user.toString());
-            } else {
-                textArea.setText("User not found!");
+    private void loadUserData() {
+        SwingUtilities.invokeLater(() -> {
+            try {
+                UserEntity user = client.getUser(username);
+                System.out.println(user);
+                if (user != null) {
+                    userRole = user.getRol();
+                    welcomeLabel.setText("Welcome, " + username);
+                    updateUIForRole();
+                } else {
+                    JOptionPane.showMessageDialog(this, "User not found!");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error loading user data.");
             }
+        });
+    }
+
+    private void updateUIForRole() {
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BorderLayout());
+
+        if (userRole == UserEntity.Rol.USUARIO) {
+            JLabel newsLabel = new JLabel("Noticias", SwingConstants.CENTER);
+            contentPanel.add(newsLabel, BorderLayout.CENTER);
+        } else if (userRole == UserEntity.Rol.ADMINISTRADOR) {
+            manageUsersButton = new JButton("Gestionar Usuarios");
+            newsButton = new JButton("Noticias");
+
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new GridLayout(2, 1));
+            buttonPanel.add(manageUsersButton);
+            buttonPanel.add(newsButton);
+
+            contentPanel.add(buttonPanel, BorderLayout.CENTER);
         }
+
+        add(contentPanel, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 }
