@@ -1,31 +1,40 @@
 package edu.lenin;
 
 import edu.lenin.domain.entities.UserEntity;
-import edu.lenin.domain.interfaces.UserServiceInterface;
-
-import java.rmi.Naming;
+import edu.lenin.UserServiceClient;
 
 public class Client {
-
-  private String url;
+  private UserServiceClient serviceClient;
 
   public Client(String ip, String port, String serviceName) {
-    this.url = "rmi://" + ip + ":" + port + "/" + serviceName;
+    this.serviceClient = new UserServiceClient(ip, port, serviceName);
   }
 
-  public void createUser(String username, String password, String nombre, UserEntity.Rol rol) {
+  public boolean createUser(String username, String password, String nombre, UserEntity.Rol rol) {
+    UserEntity user = new UserEntity(username, password, nombre, rol);
     try {
-      UserServiceInterface service = (UserServiceInterface) Naming.lookup(this.url);
-
-      // Crear una instancia de UserEntity
-      UserEntity user = new UserEntity(username, password, nombre, rol);
-
-      // Llamar al método createUser en el servicio
-      service.createUser(user);
-      System.out.println("Usuario creado con éxito.");
+      return serviceClient.createUser(user);
     } catch (Exception e) {
       e.printStackTrace();
+      return false;
     }
   }
-  
+
+  public UserEntity getUser(String username) {
+    try {
+      return serviceClient.getUser(username);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public boolean login(String username, String password) {
+    try {
+      return serviceClient.login(username, password);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
 }
