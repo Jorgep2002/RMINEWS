@@ -5,6 +5,10 @@ import edu.lenin.domain.entities.UserEntity;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
+import java.util.List;
 
 public class MainFrame extends JFrame {
     private JLabel welcomeLabel;
@@ -64,6 +68,13 @@ public class MainFrame extends JFrame {
             manageUsersButton = new JButton("Gestionar Usuarios");
             newsButton = new JButton("Noticias");
 
+            manageUsersButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    openManageUsersWindow();
+                }
+            });
+
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new GridLayout(2, 1));
             buttonPanel.add(manageUsersButton);
@@ -75,5 +86,15 @@ public class MainFrame extends JFrame {
         add(contentPanel, BorderLayout.CENTER);
         revalidate();
         repaint();
+    }
+
+    // Método para abrir la ventana de gestión de usuarios
+    private void openManageUsersWindow() {
+
+            List<UserEntity> users = client.getAllUsers();
+            System.out.println(users);
+            ManageUsersWindow manageUsersWindow = new ManageUsersWindow(users);
+            manageUsersWindow.setVisible(true);
+
     }
 }

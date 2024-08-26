@@ -3,6 +3,8 @@ package edu.lenin;
 import edu.lenin.domain.entities.UserEntity;
 import edu.lenin.UserServiceClient;
 
+import java.util.List;
+
 public class Client {
   private UserServiceClient serviceClient;
 
@@ -28,6 +30,15 @@ public class Client {
       return null;
     }
   }
+  public List<UserEntity> getAllUsers() {
+    try {
+      return serviceClient.getAllUsers();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
 
   public boolean login(String username, String password) {
     try {

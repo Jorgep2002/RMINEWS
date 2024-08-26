@@ -31,9 +31,8 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceI
     @Override
     public List<UserEntity> getAllUsers() throws RemoteException {
         List<UserEntity> users = new ArrayList<>();
-        // Aquí debes agregar la lógica para obtener todos los usuarios desde el DAO
-        // Ejemplo de cómo podrías hacerlo si agregas un método en el DAO:
-        // users = userDAO.getAllUsers();
+
+        users = userDAO.getAllUsers();
         return users;
     }
 
