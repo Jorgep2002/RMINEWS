@@ -27,18 +27,19 @@ public class UserDAOImpl {
         }
     }
 
-    // Método para obtener un usuario por su nombre de usuario
-    public UserEntity getUser(String username) {
-        String sql = "SELECT * FROM usuarios WHERE username = ?";
+    // Método para obtener un usuario por su id
+    public UserEntity getUser(int id) {
+        String sql = "SELECT * FROM usuarios WHERE id = ?";
         try (Connection conn = mysqlDatabase.getConnection(); // Usa la conexión de mysqlDatabase
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
+            stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                String username = rs.getString("username");
                 String password = rs.getString("password");
                 String nombre = rs.getString("nombre");
                 UserEntity.Rol rol = UserEntity.Rol.valueOf(rs.getString("rol"));
-                return new UserEntity(username, password, nombre, rol);
+                return new UserEntity(id, username, password, nombre, rol);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,15 +47,36 @@ public class UserDAOImpl {
         return null;
     }
 
-    // Método para actualizar un usuario
-    public void updateUser(String username, String nombre, UserEntity.Rol rol) {
-        String sql = "UPDATE usuarios SET nombre = ?, rol = ? WHERE username = ?";
+    // Método para obtener un usuario por su nombre de usuario
+    public UserEntity getUserByUsername(String username) {
+        String sql = "SELECT * FROM usuarios WHERE username = ?";
+        try (Connection conn = mysqlDatabase.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String password = rs.getString("password");
+                String nombre = rs.getString("nombre");
+                UserEntity.Rol rol = UserEntity.Rol.valueOf(rs.getString("rol"));
+                return new UserEntity(id, username, password, nombre, rol);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Método para actualizar un usuario por id
+    public void updateUser(int id, String newUsername, String nombre, UserEntity.Rol rol) {
+        String sql = "UPDATE usuarios SET username = ?, nombre = ?, rol = ? WHERE id = ?";
         try (Connection conn = mysqlDatabase.getConnection(); // Usa la conexión de mysqlDatabase
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, nombre); // Establece el nombre en el primer parámetro
-            stmt.setString(2, rol.name()); // Establece el rol en el segundo parámetro
-            stmt.setString(3, username); // Establece el username en el tercer parámetro
+            stmt.setString(1, newUsername); // Establece el nuevo username
+            stmt.setString(2, nombre); // Establece el nuevo nombre
+            stmt.setString(3, rol.name()); // Establece el nuevo rol
+            stmt.setInt(4, id); // Establece el id del usuario a actualizar
 
             stmt.executeUpdate(); // Ejecuta la actualización en la base de datos
 
@@ -64,13 +86,12 @@ public class UserDAOImpl {
         }
     }
 
-
-    // Método para eliminar un usuario
-    public void deleteUser(String username) {
-        String sql = "DELETE FROM usuarios WHERE username = ?";
+    // Método para eliminar un usuario por id
+    public void deleteUser(int id) {
+        String sql = "DELETE FROM usuarios WHERE id = ?";
         try (Connection conn = mysqlDatabase.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
+            stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error al eliminar el usuario");
@@ -86,11 +107,12 @@ public class UserDAOImpl {
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 String nombre = rs.getString("nombre");
                 UserEntity.Rol rol = UserEntity.Rol.valueOf(rs.getString("rol"));
-                UserEntity user = new UserEntity(username, password, nombre, rol);
+                UserEntity user = new UserEntity(id, username, password, nombre, rol);
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -100,12 +122,12 @@ public class UserDAOImpl {
         return users;
     }
 
-    // Método para verificar si un usuario existe
-    public boolean userExists(String username) {
-        String sql = "SELECT 1 FROM usuarios WHERE username = ?";
+    // Método para verificar si un usuario existe por id
+    public boolean userExists(int id) {
+        String sql = "SELECT 1 FROM usuarios WHERE id = ?";
         try (Connection conn = mysqlDatabase.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
+            stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         } catch (SQLException e) {
@@ -114,4 +136,35 @@ public class UserDAOImpl {
         }
         return false;
     }
+
+    // Método para verificar las credenciales de un usuario
+    // Modificado para devolver UserEntity
+    public UserEntity authenticate(String username, String password) {
+        String sql = "SELECT * FROM usuarios WHERE username = ?";
+        try (Connection conn = mysqlDatabase.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String storedPassword = rs.getString("password");
+                if (storedPassword.equals(password)) {
+                    // Construir el objeto UserEntity con los datos recuperados
+                    Integer id = rs.getInt("id"); // Asignar el id
+                    String nombreUsuario = rs.getString("username"); // Asignar el username
+                    String nombre = rs.getString("nombre"); // Asignar el nombre
+                    // Asegúrate de que el valor de rol en la base de datos coincida con el enum
+                    UserEntity.Rol rol = UserEntity.Rol.valueOf(rs.getString("rol"));
+                    UserEntity user = new UserEntity(id, nombreUsuario, password, nombre, rol);
+
+                    System.out.println(user);
+                    return user; // Devolver el usuario autenticado
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al autenticar el usuario");
+            e.printStackTrace();
+        }
+        return null; // Retornar null si la autenticación falla
+    }
+
 }

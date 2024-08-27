@@ -1,7 +1,6 @@
 package edu.lenin;
 
 import edu.lenin.domain.entities.UserEntity;
-import edu.lenin.UserServiceClient;
 
 import java.util.List;
 
@@ -23,10 +22,10 @@ public class Client {
     }
   }
 
-  // Método para obtener un usuario por su nombre de usuario
-  public UserEntity getUser(String username) {
+  // Método para obtener un usuario por su id
+  public UserEntity getUser(int id) {
     try {
-      return serviceClient.getUser(username);
+      return serviceClient.getUser(id);
     } catch (Exception e) {
       e.printStackTrace();
       return null;
@@ -44,19 +43,18 @@ public class Client {
   }
 
   // Método para autenticar un usuario
-  public boolean login(String username, String password) {
+  public UserEntity login(String username, String password) {
     try {
       return serviceClient.login(username, password);
     } catch (Exception e) {
       e.printStackTrace();
-      return false;
+      return null;
     }
   }
-
   // Método para actualizar un usuario existente
-  public boolean updateUser(String username,  String nombre, UserEntity.Rol rol) {
+  public boolean updateUser(int id, String newUsername, String nombre, UserEntity.Rol rol) {
     try {
-      serviceClient.updateUser(username,  nombre, rol);
+      serviceClient.updateUser(id, newUsername, nombre, rol);
       return true;
     } catch (Exception e) {
       e.printStackTrace();
@@ -64,10 +62,10 @@ public class Client {
     }
   }
 
-  // Método para eliminar un usuario por su nombre de usuario
-  public boolean deleteUser(String username) {
+  // Método para eliminar un usuario por su id
+  public boolean deleteUser(int id) {
     try {
-      serviceClient.deleteUser(username);
+      serviceClient.deleteUser(id);
       return true;
     } catch (Exception e) {
       e.printStackTrace();

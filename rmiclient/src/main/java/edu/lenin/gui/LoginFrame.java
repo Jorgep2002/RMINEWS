@@ -1,6 +1,8 @@
 package edu.lenin.gui;
 
 import edu.lenin.Client;
+import edu.lenin.domain.entities.UserEntity;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -47,13 +49,19 @@ public class LoginFrame extends JFrame {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
-        boolean loggedIn = client.login(username, password);
-        if (loggedIn) {
-            JOptionPane.showMessageDialog(this, "Login successful!");
-            new MainFrame(client, username).setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Login failed!");
+        try {
+            UserEntity user = client.login(username, password);
+            if (user != null) {
+                JOptionPane.showMessageDialog(this, "Login successful!");
+
+                new MainFrame(client, user.getId()).setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Login failed!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error during login.");
         }
     }
 }

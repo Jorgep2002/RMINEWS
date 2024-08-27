@@ -1,11 +1,11 @@
 package edu.lenin.domain.entities;
 
 import java.io.Serializable;
-import java.util.Map;
 
 public class UserEntity implements Serializable {
     private static final long serialVersionUID = 1L; // Agrega un serialVersionUID para compatibilidad
 
+    private Integer id; // Cambiado de int a Integer para permitir null
     private String username;
     private String password;
     private String nombre;
@@ -18,24 +18,29 @@ public class UserEntity implements Serializable {
     }
 
     // Constructor
-    public UserEntity(String username, String password, String nombre, Rol rol) {
+    // Constructor con todos los campos
+    public UserEntity(Integer id, String username, String password, String nombre, Rol rol) {
+        this.id = id; // Inicializar el campo id
         this.username = username;
         this.password = password;
         this.nombre = nombre;
         this.rol = rol;
     }
 
-    // Método estático fromObject
-    public static UserEntity fromObject(Map<String, Object> object) {
-        String username = (String) object.get("username");
-        String password = (String) object.get("password");
-        String nombre = (String) object.get("nombre");
-        Rol rol = Rol.valueOf((String) object.get("rol").toString().toUpperCase());
-
-        return new UserEntity(username, password, nombre, rol);
+    // Constructor sin el id
+    public UserEntity(String username, String password, String nombre, Rol rol) {
+        this(null, username, password, nombre, rol); // Llama al constructor principal con id como null
+    }
+    // Getters y Setters para el campo id
+    public Integer getId() {
+        return id;
     }
 
-    // Getters y Setters
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    // Getters y Setters para los otros campos
     public String getUsername() {
         return username;
     }
@@ -70,8 +75,9 @@ public class UserEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "Usuario{" +
-                "username='" + username + '\'' +
+        return "UserEntity{" +
+                "id=" + id +  // Incluir el id en el método toString
+                ", username='" + username + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", rol=" + rol +
                 '}';

@@ -24,31 +24,27 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceI
     }
 
     @Override
-    public UserEntity getUser(String username) throws RemoteException {
-        return userDAO.getUser(username);
+    public UserEntity getUser(int id) throws RemoteException {
+        return userDAO.getUser(id);
     }
 
     @Override
     public List<UserEntity> getAllUsers() throws RemoteException {
-        List<UserEntity> users = new ArrayList<>();
-
-        users = userDAO.getAllUsers();
-        return users;
+        return userDAO.getAllUsers();
     }
 
     @Override
-    public void updateUser(String username,  String nombre, UserEntity.Rol rol) throws RemoteException {
-        userDAO.updateUser(username, nombre, rol);
+    public void updateUser(int id, String newUsername, String nombre, UserEntity.Rol rol) throws RemoteException {
+        userDAO.updateUser(id, newUsername, nombre, rol);
     }
 
     @Override
-    public void deleteUser(String username) throws RemoteException {
-        userDAO.deleteUser(username);
+    public void deleteUser(int id) throws RemoteException {
+        userDAO.deleteUser(id);
     }
 
     @Override
-    public boolean login(String username, String password) throws RemoteException {
-        UserEntity user = userDAO.getUser(username);
-        return user != null && user.getPassword().equals(password);
+    public UserEntity login(String username, String password) throws RemoteException {
+        return userDAO.authenticate(username, password);
     }
 }

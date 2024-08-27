@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.RemoteException;
 import java.util.List;
 
 public class MainFrame extends JFrame {
@@ -15,12 +14,13 @@ public class MainFrame extends JFrame {
     private JButton manageUsersButton;
     private JButton newsButton;
     private Client client;
-    private String username;
+    private Integer username;
     private UserEntity.Rol userRole;
 
-    public MainFrame(Client client, String username) {
-        this.client = client;
+    public MainFrame(Client client, Integer username) {
         this.username = username;
+        this.client = client;
+
         System.out.println(username);
         setTitle("Main Frame");
         setSize(400, 300);
@@ -93,5 +93,8 @@ public class MainFrame extends JFrame {
         List<UserEntity> users = client.getAllUsers();
         ManageUsersWindow manageUsersWindow = new ManageUsersWindow(client, users); // Pasar el cliente
         manageUsersWindow.setVisible(true);
+
+        // Cerrar la ventana principal
+        dispose();
     }
 }

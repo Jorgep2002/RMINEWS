@@ -25,9 +25,9 @@ public class UserServiceClient {
         return true;
     }
 
-    // Método para obtener un usuario por su nombre de usuario
-    public UserEntity getUser(String username) throws RemoteException {
-        return service.getUser(username);
+    // Método para obtener un usuario por su id
+    public UserEntity getUser(int id) throws RemoteException {
+        return service.getUser(id);
     }
 
     // Método para obtener todos los usuarios
@@ -36,17 +36,17 @@ public class UserServiceClient {
     }
 
     // Método para actualizar un usuario existente
-    public void updateUser(String username,  String nombre, UserEntity.Rol rol) throws RemoteException {
-        service.updateUser(username,  nombre, rol);
+    public void updateUser(int id, String newUsername, String nombre, UserEntity.Rol rol) throws RemoteException {
+        service.updateUser(id, newUsername, nombre, rol);
     }
 
-    // Método para eliminar un usuario por su nombre de usuario
-    public void deleteUser(String username) throws RemoteException {
-        service.deleteUser(username);
+    // Método para eliminar un usuario por su id
+    public void deleteUser(int id) throws RemoteException {
+        service.deleteUser(id);
     }
 
     // Método para autenticar un usuario
-    public boolean login(String username, String password) throws RemoteException {
+    public UserEntity login(String username, String password) throws RemoteException {
         return service.login(username, password);
     }
 }
