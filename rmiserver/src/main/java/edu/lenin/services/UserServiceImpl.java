@@ -37,8 +37,8 @@ public class UserServiceImpl extends UnicastRemoteObject implements UserServiceI
     }
 
     @Override
-    public void updateUser(UserEntity user) throws RemoteException {
-        userDAO.updateUser(user);
+    public void updateUser(String username,  String nombre, UserEntity.Rol rol) throws RemoteException {
+        userDAO.updateUser(username, nombre, rol);
     }
 
     @Override

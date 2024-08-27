@@ -47,20 +47,23 @@ public class UserDAOImpl {
     }
 
     // Método para actualizar un usuario
-    public void updateUser(UserEntity user) {
-        String sql = "UPDATE usuarios SET password = ?, nombre = ?, rol = ? WHERE username = ?";
+    public void updateUser(String username, String nombre, UserEntity.Rol rol) {
+        String sql = "UPDATE usuarios SET nombre = ?, rol = ? WHERE username = ?";
         try (Connection conn = mysqlDatabase.getConnection(); // Usa la conexión de mysqlDatabase
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, user.getPassword());
-            stmt.setString(2, user.getNombre());
-            stmt.setString(3, user.getRol().name());
-            stmt.setString(4, user.getUsername());
-            stmt.executeUpdate();
+
+            stmt.setString(1, nombre); // Establece el nombre en el primer parámetro
+            stmt.setString(2, rol.name()); // Establece el rol en el segundo parámetro
+            stmt.setString(3, username); // Establece el username en el tercer parámetro
+
+            stmt.executeUpdate(); // Ejecuta la actualización en la base de datos
+
         } catch (SQLException e) {
             System.out.println("Error al actualizar el usuario");
             e.printStackTrace();
         }
     }
+
 
     // Método para eliminar un usuario
     public void deleteUser(String username) {

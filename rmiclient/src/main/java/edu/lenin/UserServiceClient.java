@@ -36,8 +36,8 @@ public class UserServiceClient {
     }
 
     // Método para actualizar un usuario existente
-    public void updateUser(UserEntity user) throws RemoteException {
-        service.updateUser(user);
+    public void updateUser(String username,  String nombre, UserEntity.Rol rol) throws RemoteException {
+        service.updateUser(username,  nombre, rol);
     }
 
     // Método para eliminar un usuario por su nombre de usuario

@@ -18,7 +18,7 @@ public interface UserServiceInterface extends Remote {
     List<UserEntity> getAllUsers() throws RemoteException;
 
     // Actualizar un usuario existente
-    void updateUser(UserEntity user) throws RemoteException;
+    void updateUser(String username,  String nombre, UserEntity.Rol rol) throws RemoteException;
 
     // Eliminar un usuario por su nombre de usuario
     void deleteUser(String username) throws RemoteException;

@@ -25,15 +25,7 @@ public class UserEntity implements Serializable {
         this.rol = rol;
     }
 
-    // Método estático fromObject
-    public static UserEntity fromObject(Map<String, Object> object) {
-        String username = (String) object.get("username");
-        String password = (String) object.get("password");
-        String nombre = (String) object.get("nombre");
-        Rol rol = Rol.valueOf((String) object.get("rol").toString().toUpperCase());
 
-        return new UserEntity(username, password, nombre, rol);
-    }
 
     // Getters y Setters
     public String getUsername() {

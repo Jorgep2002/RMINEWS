@@ -90,11 +90,8 @@ public class MainFrame extends JFrame {
 
     // Método para abrir la ventana de gestión de usuarios
     private void openManageUsersWindow() {
-
-            List<UserEntity> users = client.getAllUsers();
-            System.out.println(users);
-            ManageUsersWindow manageUsersWindow = new ManageUsersWindow(users);
-            manageUsersWindow.setVisible(true);
-
+        List<UserEntity> users = client.getAllUsers();
+        ManageUsersWindow manageUsersWindow = new ManageUsersWindow(client, users); // Pasar el cliente
+        manageUsersWindow.setVisible(true);
     }
 }
